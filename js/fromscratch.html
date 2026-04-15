@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Hobby Page</title>
+
+<link rel="stylesheet" href="scratch.css">
+
+<style>
+body {
+    font-family:Fira Code, monospace;
+    background-color: #b9a5e3;
+    color: #222;
+}
+
+.section {
+    padding: 20px;
+    margin: 20px;
+    background: white;
+    border-radius: 10px;
+}
+
+h1, h2 {
+    color: darkblue;
+}
+</style>
+</head>
+
+<body>
+
+
+<a href="http://127.0.0.1:5500/index.html">Back to Professional Page</a>
+<BR> <br>
+<a href="http://127.0.0.1:5500/js/ai.html">To the AI Game</a>
+
+<h1>Long Distance Running</h1>
+
+
+<a href="#video">Jump to Video</a> |
+<a href="#tableau">Jump to Tableau</a>
+
+<!-- DIV 1 -->
+<div class="section">
+    <h2>Why Running is Cool</h2>
+    <p>Running requires mental toughness and perseverance.</p>
+</div>
+
+<!-- DIV 2 (Nested List) -->
+<div class="section">
+    <h2>Best distance runners from BYU</h2>
+
+    <ol>
+        <li>Conner Mantz</li>
+            <ul>
+                <li>American marathon record</li>
+                
+            </ul>
+        </li>
+
+        <li> Jared ward
+            <ul>
+                <li>Olympic marathoner</li>
+                
+            </ul>
+        <li> Casey Clinger</li>
+            <ul>
+                <li>five time All-American</li>
+               
+            </ul>
+        </li>
+    </ol>
+</div>
+
+
+<div class="section">
+    <h2>Conner Mantz</h2>
+    <img src="img/mantz.jpg" width="400">
+</div>
+
+
+<div class="section" id="video">
+    <h2>Conner Mantz Record Documentary</h2>
+
+    <iframe width="560" height="315"
+        src="https://www.youtube.com/embed/hHp8EYw53DE"
+        frameborder="0"
+        allowfullscreen>
+    </iframe>
+</div>
+
+
+<div class="section" id="tableau">
+    <h2>Marathon Records (Tableau)</h2>
+
+    
+    <iframe src="https://public.tableau.com/views/100YearsofMarathonWorldRecord/WorldRecord?:showVizHome=no&:embed=true"
+                width="800"
+                height="600">
+            </iframe>
+</div>
+
+</body>
+</html>

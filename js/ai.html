@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Shape Matching Game</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #eef2f7;
+    }
+
+    h1 {
+        margin-top: 20px;
+    }
+
+    .score {
+        font-size: 18px;
+        margin-top: 10px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 40px;
+    }
+
+    .shapes, .holes {
+        display: grid;
+        grid-template-columns: repeat(2, 120px);
+        gap: 25px;
+    }
+
+    .shape, .hole {
+        width: 100px;
+        height: 100px;
+        transition: all 0.4s ease;
+    }
+
+    .shape {
+        cursor: grab;
+    }
+
+    /* Shapes */
+    .circle { background: red; border-radius: 50%; }
+    .square { background: blue; }
+    .diamond { background: purple; transform: rotate(45deg); }
+    .oval { background: orange; border-radius: 50% / 30%; }
+    .rectangle { background: teal; height: 70px; margin-top: 15px; }
+    .parallelogram { background: pink; transform: skew(20deg); }
+
+    .triangle {
+        width: 0;
+        height: 0;
+        border-left: 50px solid transparent;
+        border-right: 50px solid transparent;
+        border-bottom: 100px solid green;
+        background: none;
+    }
+
+    /* Holes */
+    .hole {
+        border: 3px dashed #555;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hole.circle { border-radius: 50%; }
+    .hole.square {}
+    .hole.diamond { transform: rotate(45deg); }
+    .hole.oval { border-radius: 50% / 30%; }
+    .hole.rectangle { height: 70px; margin-top: 15px; }
+    .hole.parallelogram { transform: skew(20deg); }
+
+    .hole.triangle {
+        width: 0;
+        height: 0;
+        border-left: 50px dashed transparent;
+        border-right: 50px dashed transparent;
+        border-bottom: 100px dashed #555;
+        background: none;
+    }
+
+    .filled {
+        border: none !important;
+    }
+
+    button {
+        margin-top: 30px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    #message {
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        color: green;
+    }
+</style>
+</head>
+<body>
+
+<h1>Shape Matching Game</h1>
+<div class="score">Score: <span id="score">0</span></div>
+
+<div class="container">
+    <!-- Shapes -->
+    <div class="shapes" id="shapesContainer">
+        <div class="shape circle" draggable="true" id="circle"></div>
+        <div class="shape square" draggable="true" id="square"></div>
+        <div class="shape triangle" draggable="true" id="triangle"></div>
+        <div class="shape diamond" draggable="true" id="diamond"></div>
+        <div class="shape oval" draggable="true" id="oval"></div>
+        <div class="shape rectangle" draggable="true" id="rectangle"></div>
+        <div class="shape parallelogram" draggable="true" id="parallelogram"></div>
+    </div>
+
+    <!-- Holes -->
+    <div class="holes">
+        <div class="hole circle" data-shape="circle"></div>
+        <div class="hole square" data-shape="square"></div>
+        <div class="hole triangle" data-shape="triangle"></div>
+        <div class="hole diamond" data-shape="diamond"></div>
+        <div class="hole oval" data-shape="oval"></div>
+        <div class="hole rectangle" data-shape="rectangle"></div>
+        <div class="hole parallelogram" data-shape="parallelogram"></div>
+    </div>
+</div>
+
+<button onclick="resetGame()">Reset Game</button>
+<div id="message"></div>
+
+<script>
+    const shapes = document.querySelectorAll('.shape');
+    const holes = document.querySelectorAll('.hole');
+    const message = document.getElementById('message');
+    const scoreDisplay = document.getElementById('score');
+    const shapesContainer = document.getElementById('shapesContainer');
+
+    let draggedShape = null;
+    let score = 0;
+    let matchedCount = 0;
+
+    shapes.forEach(shape => {
+        shape.addEventListener('dragstart', () => {
+            draggedShape = shape;
+        });
+    });
+
+    holes.forEach(hole => {
+        hole.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        hole.addEventListener('drop', () => {
+            if (!draggedShape) return;
+
+            const correct = hole.getAttribute('data-shape');
+
+            if (draggedShape.id === correct) {
+                hole.appendChild(draggedShape);
+                draggedShape.setAttribute("draggable", "false");
+                draggedShape.style.cursor = "default";
+                hole.classList.add("filled");
+
+                score += 10;
+                matchedCount++;
+            } else {
+                score -= 2;
+            }
+
+            scoreDisplay.textContent = score;
+
+            if (matchedCount === 7) {
+                message.textContent = "🎉 Perfect! All shapes matched!";
+            }
+        });
+    });
+
+    function resetGame() {
+        message.textContent = "";
+
+        // Animate shapes back
+        shapes.forEach(shape => {
+            shape.style.transform = "scale(0.5)";
+            shape.style.opacity = "0";
+        });
+
+        setTimeout(() => {
+            shapes.forEach(shape => {
+                shapesContainer.appendChild(shape);
+                shape.setAttribute("draggable", "true");
+                shape.style.cursor = "grab";
+                shape.style.transform = "scale(1)";
+                shape.style.opacity = "1";
+            });
+
+            holes.forEach(hole => {
+                hole.classList.remove("filled");
+            });
+
+            score = 0;
+            matchedCount = 0;
+            scoreDisplay.textContent = score;
+
+        }, 400);
+    }
+</script>
+
+</body>
+</html>
